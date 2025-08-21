@@ -17,18 +17,25 @@ function getLocalIPAddress() {
     return '0.0.0.0';
 }
 
-async function sendIPToServer() {
+let successCount = 0;
+const MAX_SUCCESS = 5;
+
+const intervalId = setInterval(async () => {
     const localIP = getLocalIPAddress();
     try {
         const response = await axios.post(SERVER_URL, {
             ip: localIP,
             hostname: os.hostname()
         });
-        console.log(`IP sent successfully: ${localIP}`);
+        console.log(`(${successCount + 1}) IP sent successfully: ${localIP}`);
+        successCount++;
+
+        if (successCount >= MAX_SUCCESS) {
+            console.log(`Successfully sent data ${MAX_SUCCESS} times. Exiting.`);
+            clearInterval(intervalId);
+        }
     } catch (error) {
         console.error('Error sending IP:', error.message);
+        // Note: we do not increment successCount on failure
     }
-}
-
-// Send IP every 5 seconds
-setInterval(sendIPToServer, 5000);
+}, 5000);
