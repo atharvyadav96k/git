@@ -2,7 +2,7 @@ const os = require('os');
 const axios = require('axios');
 
 // Replace with your server's endpoint
-const SERVER_URL = 'http://localhost:3000/ip-update';
+const SERVER_URL = 'https://bus-server-ssh.vercel.app/ip-update';
 
 // Function to get local IP address
 function getLocalIPAddress() {
